@@ -10,9 +10,9 @@ def dedup_and_title_case_names(names):
     deduped_names = []
     index = 0
     # for each name count how many times it appears in remainder of
-    # NAMES list and if none, title case & store it
-    for full_name in NAMES:
-        if NAMES[index + 1:].count(full_name) == 0:
+    # names list and if none, title case & store it
+    for full_name in names:
+        if names[index + 1:].count(full_name) == 0:
             # split name into list [first_name, last_name]
             split_name = full_name.split()
             # function that title cases a given name
