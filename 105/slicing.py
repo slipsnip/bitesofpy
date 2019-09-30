@@ -1,4 +1,5 @@
 from string import ascii_lowercase
+import re
 
 text = """
 One really nice feature of Python is polymorphism: using the same operation
@@ -20,3 +21,19 @@ def slice_and_dice(text: str = text) -> list:
     """Get a list of words from the passed in text.
        See the Bite description for step by step instructions"""
     results = []
+    regex_non_alpha = r'^[^a-zA-Z]'
+    cleaned_text = [line.strip() for line in text.splitlines()]
+    for line in cleaned_text:
+        if len(line) == 0:
+            continue
+        first_char = line[0]
+        # ignore lines that do not begin with a letter
+        if re.match(regex_non_alpha, line) != None:
+            continue
+        # check first character against its lowercase counterpart
+        if first_char == first_char.lower():
+            last_word = line.split()[-1]
+            # remove any trailing ! or .
+            last_word = re.sub(r'([!\.])$','',last_word)
+            results.append(last_word)
+    return results
