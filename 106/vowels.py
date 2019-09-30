@@ -42,5 +42,16 @@ def strip_vowels(text: str) -> (str, int):
        of Python's new type hinting:
        https://docs.python.org/3/library/typing.html"""
     # problem statement on pybites said I could use regex
-    return re.subn(r'[aeiouAEIOU]', '*', text)
+    # return re.subn(r'[aeiouAEIOU]', '*', text)
+    parsed_text = ''
+    count_vowels = 0
+    for line in text.splitlines():
+        for char in list(line):
+            if char.lower() in list(vowels):
+                count_vowels += 1
+                parsed_text += '*'
+            else:
+                parsed_text += char
+    return (parsed_text, count_vowels)
+
 
