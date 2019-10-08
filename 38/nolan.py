@@ -10,18 +10,27 @@ xmlstring = '''<?xml version="1.0" encoding="UTF-8"?>
   <movie title="Interstellar" year="2014" rated="PG-13" released="07 Nov 2014" runtime="169 min" genre="Adventure, Drama, Sci-Fi" director="Christopher Nolan"/>
 </root>'''  # noqa E501
 
+def _get_runtime(element):
+    """Takes an ElementTree Element and returns its runtime parsed as an int
+    assumes runtimes are all in format: 'int min'"""
+    runtime_string = element.attrib['runtime']
+    return int(runtime_string.split()[0])
+
 
 def get_tree():
     """You probably want to use ET.fromstring"""
-    pass
+    return ET.fromstring(xmlstring)
 
 
 def get_movies():
     """Call get_tree and retrieve all movie titles, return a list or generator"""
-    pass
+    tree = get_tree()
+    return map(lambda movie: movie.get('title'), tree.findall('movie'))
 
 
 def get_movie_longest_runtime():
     """Call get_tree again and return the movie with the longest runtime in minutes,
        for latter consider adding a _get_runtime helper"""
-    pass
+    tree = get_tree()
+    longest_movie = sorted(tree.findall('movie'), key=_get_runtime, reverse=True)[0]
+    return longest_movie.attrib['title']
