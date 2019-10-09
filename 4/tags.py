@@ -1,6 +1,9 @@
 import os
-from collections import Counter
+import re
 import urllib.request
+from operator import itemgetter
+from collections import Counter
+
 
 # prep
 tempfile = os.path.join('/tmp', 'feed')
@@ -15,4 +18,5 @@ with open(tempfile) as f:
 def get_pybites_top_tags(n=10):
     """use Counter to get the top 10 PyBites tags from the feed
        data already loaded into the content variable"""
-    pass
+    tags = Counter(re.findall(r'<category>(.+?)</category>', content))
+    return sorted(tags.items(), key=itemgetter(1), reverse=True)[:n]
