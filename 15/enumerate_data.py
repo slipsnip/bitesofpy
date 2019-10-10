@@ -11,10 +11,13 @@ def enumerate_names_countries():
        5. Martin     USA
        6. Rodolfo    Mexico"""
     # breakpoint()
-    for enumerated_names in enumerate(names,1):
+    # change to one long \n delimited string to test pytest capfd vs capsys
+    out = ''
+    for enumerated_names in enumerate(names, 1):
         index = enumerated_names[0]
         row = (f"{index}. "
                f"{enumerated_names[1]:<11}"
-               f"{countries[index - 1]}")
+               f"{countries[index - 1]}\n")
 
-        print(row)
+        out += row
+    print(out)
