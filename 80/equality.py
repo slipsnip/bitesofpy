@@ -1,4 +1,5 @@
 from enum import Enum
+from collections import Counter
 
 
 class Equality(Enum):
@@ -18,4 +19,19 @@ def check_equality(list1, list2):
        - return SAME_UNORDERED_DEDUPED if they have the same unordered content
          and reduced to unique items
        - return NO_EQUALITY if none of the previous cases match"""
-    pass
+    list1_len = len(list1)
+    list2_len = len(list2)
+    if (list1 is list2):
+        return Equality.SAME_REFERENCE
+    # add 1 for every element of list1 and list2 are equal
+    # compare total 1's added to length to determin equality and order
+    elif list1_len == list2_len:
+        if list1_len == sum([1 for first, second in zip(list1, list2) if first == second]):
+            return Equality.SAME_ORDERED
+    if Counter(list1) == Counter(list2):
+        return Equality.SAME_UNORDERED
+    # if no symetric differences when cast to sets, deduped
+    elif not set(list1) ^ set(list2):
+        return Equality.SAME_UNORDERED_DEDUPED
+    else:
+        return Equality.NO_EQUALITY
