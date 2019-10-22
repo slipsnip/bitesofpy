@@ -1,0 +1,3 @@
+This is some text with a few sentences for NLTK to analyze.  I wounder how this will
+work and what would trip it up if anything? Also how many lines do I have in this file
+can it tell me that?
