@@ -37,7 +37,7 @@ blood_type_text = {
 }
 
 # complete :
-def check_bt(donor, recipient):
+def check_bt(*args):
     """ Checks red blood cell compatibility based on 8 blood types
         Args:
         donor (int | str | Bloodtype): red blood cell type of the donor
@@ -45,8 +45,31 @@ def check_bt(donor, recipient):
         Returns:
         bool: True for compatability, False otherwise.
     """
-    pass
-
+    parsed_args = [None, None]  # store converted valid args here
+    # process args
+    for i, arg in enumerate(args):
+        # check for invalid type
+        if not isinstance(arg, (int,str,Bloodtype)):
+            raise TypeError(f'Must be int, str or Bloodtype')
+        # if int check valid range
+        if isinstance(arg, int):
+            valid_range = range(len(Bloodtype))
+            if arg not in valid_range:
+                raise ValueError(f'{arg} not in {valid_range}')
+            parsed_args[i] = arg
+        # if str check valid value, append to parsed_args
+        elif isinstance(arg, str):
+            valid_values = blood_type_text.keys()
+            if arg not in valid_values:
+                raise ValueError(f'{arg} not in {valid_values}')
+            # save converted to int value
+            parsed_args[i] = blood_type_text.get(arg).value
+        else:
+            parsed_args[i] = arg.value
+    # destructure our arguments as variables
+    donor, recipient = parsed_args
+    antigen_comp = _particular_antigen_comp(donor, recipient)
+    return len([comp for comp in antigen_comp if comp >= 0]) == 3
 
 # hint
 def _particular_antigen_comp(donor: int, recipient: int) -> tuple:
