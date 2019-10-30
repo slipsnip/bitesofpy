@@ -40,4 +40,6 @@ def get_users_for_shell(passwd_output: str = PASSWD_OUTPUT,
     """Match the passwd_output string for users with grep_shell.
        Return a list of users.
     """
-    pass
+    accounts = [account for account in passwd_output.split('\n') if account.strip() != '']
+    # return [user for account in accounts for user, *_, shell in tuple(account.split(':')) if shell.split('/')[-1] == grep_shell]
+    return [user for user, *_, shell in [tuple(account.split(':')) for account in accounts] if shell.split('/')[-1] == grep_shell]
