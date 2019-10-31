@@ -1,15 +1,16 @@
 import logging
 from typing import Callable
 
-DEBUG = "..."
-INFO = "..."
-WARNING = "..."
-ERROR = "..."
-CRITICAL = "..."
+logger = logging.getLogger('pybites_logger')
+DEBUG = logger.debug
+INFO = logger.info
+WARNING = logger.warning
+ERROR = logger.error
+CRITICAL = logger.critical
 
 
 def log_it(level: Callable, msg: str) -> None:
-    pass
+    level(msg)
 
 
 if __name__ == "__main__":
