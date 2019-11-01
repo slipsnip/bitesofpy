@@ -8,4 +8,4 @@ IS_EMOJI = re.compile(r'[^\w\s,]')
 
 def get_emoji_indices(text: str) -> List[int]:
     """Given a text return indices of emoji characters"""
-    pass
+    return [match.start() for match in re.finditer(IS_EMOJI, text)]
