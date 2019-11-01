@@ -12,4 +12,7 @@ def sandwich(func):
     """
     @wraps(func)
     def wrapped(*args, **kwargs):
-        pass
+        print(UPPER_SLICE)
+        func(*args, **kwargs)
+        print(LOWER_SLICE)
+    return wrapped
