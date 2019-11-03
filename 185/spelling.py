@@ -20,7 +20,4 @@ def suggest_word(misspelled_word: str, words: set = None) -> str:
     if words is None:
         words = load_words()
 
-    sm = SequenceMatcher()
-    sm.set_seq2(misspelled_word)
-
     return get_close_matches(misspelled_word, words, n=1, cutoff=0.6)[0]
