@@ -7,4 +7,5 @@ def get_duplicate_indices(words):
        return [0, 1]:
        ['is', 'it', 'true', 'or', 'is', 'it', 'not?'] => [0, 1]
        Make sure the returning list is unique and sorted in ascending order."""
-    pass
+    duplicate_words = {word for index, word in enumerate(words) if word in words[index + 1:]}
+    return sorted([words.index(duplicate) for duplicate in duplicate_words])
