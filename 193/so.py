@@ -15,8 +15,8 @@ def top_python_questions(url=cached_so_url):
        by num_votes descending (see tests for expected output).
     """
     response = requests.get(cached_so_url)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    question_summarys = soup.find_all(class_='question-summary')
+    soup = BeautifulSoup(response.text, 'lxml')
+    question_summarys = soup.select('.question-summary')
     questions = []
     for summary in question_summarys:
         views = summary.find(class_='views').string.strip()
