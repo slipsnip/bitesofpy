@@ -19,10 +19,11 @@ def top_python_questions(url=cached_so_url):
     question_summarys = soup.find_all(class_='question-summary')
     questions = []
     for summary in question_summarys:
+        views = summary.find(class_='views').string.strip()
+        if 'm views' not in views:
+            continue
         vote_str = summary.find(class_='vote-count-post').string
         question = summary.find(class_='question-hyperlink').string
-        views = summary.find(class_='views').string.strip()
-        questions.append((question, int(vote_str), views))
-    questions = [(question[0], question[1]) for question in questions if re.search(r'(\d)+(?=m)', question[-1])] 
+        questions.append((question, int(vote_str)))
     return sorted(questions, key=itemgetter(1), reverse=True)
 
