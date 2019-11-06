@@ -1,4 +1,5 @@
 from collections import namedtuple
+from functools import reduce
 
 MIN_SCORE = 4
 DICE_VALUES = range(1, 7)
@@ -16,8 +17,15 @@ def calculate_score(scores):
 
        Returns int of the sum of the scores.
     """
-    pass
-
+    # if any(score not in DICE_VALUES for score in scores)
+    # return sum(score for score in scores if score >= MIN_SCORE)
+    total = 0
+    for score in scores:
+        if score not in DICE_VALUES:
+            raise ValueError
+        total += score if score >= MIN_SCORE else 0
+    return total
+        
 
 def get_winner(players):
     """Given a list of Player namedtuples return the player
@@ -37,4 +45,10 @@ def get_winner(players):
        output:
          Player(name='player 3', scores=[4, 5, 1, 2])
     """
-    pass
+    winner = players[0]  # keep track of current winner, first player unless proven otherwise
+    previous_ = players[0] # keep track of previous player processed
+    for player in players:
+        if len(player.scores) != len(previous_.scores):
+            raise ValueError
+        winner = player if calculate_score(player.scores) > calculate_score(previous_.scores) else winner
+    return winner
