@@ -5,4 +5,6 @@ def generate_xmas_tree(rows=10):
          *
         ***
        *****"""
-    pass
+    num_stars = [row * 2 - 1 for row in range(1, rows + 1)]
+    width = rows * 2 - 1
+    return '\n'.join(['{: ^{width}}'.format('*' * count, width=width) for count in num_stars])
