@@ -1,3 +1,6 @@
+from itertools import chain
+
+
 STAR = '*'
 
 def gen_rhombus(width):
@@ -16,4 +19,7 @@ def gen_rhombus(width):
          ***
           *
     """
-    pass
+    up = (1, width + 1, 2)
+    down = (width - 2, 0, -2)
+    num_stars = chain(range(*up), range(*down))    
+    yield from ['{: ^{width}}'.format(STAR * count, width=width) for count in num_stars]
