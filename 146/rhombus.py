@@ -19,7 +19,7 @@ def gen_rhombus(width):
          ***
           *
     """
-    up = (1, width + 1, 2)
-    down = (width - 2, 0, -2)
-    num_stars = chain(range(*up), range(*down))    
+    up = range(1, width + 1, 2) if width % 2 != 0 else range(1, width, 2)
+    down = up[:-1][::-1]  # ignore last element of up and reverse sequence
+    num_stars = chain(up, down)    
     yield from ['{: ^{width}}'.format(STAR * count, width=width) for count in num_stars]
