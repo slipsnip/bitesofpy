@@ -1,28 +1,45 @@
+from dataclasses import dataclass
+
+@dataclass
 class Employee:
     """Simple Employee class
 
     :param first_name: String of first name
+    :type first_name: str
     :param last_name: String of last name
-    :param days_of_week: Integer of how many days per week worked
+    :type last_name: str
+    :param days_per_week: Integer of how many days per week worked
+    :type days_per_week: int
     :param hours_per_day: Float of hours worked per day
+    :type hours_per_day: float
     :param wage: Float of hourly pay
+    :type wage: float
     :param weekly_pay: Property which returns a string for weekly pay
+    :type weekly_pay: str
     """
 
-    def __init__(self, first_name, last_name, days_per_week,
-                 hours_per_day, wage):
-        self.first_name = first_name
-        self.last_name = last_name
-        self.days_per_week = days_per_week
-        self.hours_per_day = hours_per_day
-        self.wage = wage
+    # def __init__(self, first_name, last_name, days_per_week,
+    #              hours_per_day, wage):
+    #     self.first_name = first_name
+    #     self.last_name = last_name
+    #     self.days_per_week = days_per_week
+    #     self.hours_per_day = hours_per_day
+    #     self.wage = wage
+    first_name: str
+    last_name: str
+    days_per_week: int
+    hours_per_day: float
+    wage: float
 
     def _rounder(self, number, places):
         """Rounds a number the specified number of places
 
         :param number: Float of number of round
+        :type number: float
         :param places: Integer of places to round to
+        :type places: int
         :return: String representation of the rounded number in US $
+        :rtype: str
         """
         amount = round(number, places)
         return f"${amount:0.2f}"
@@ -30,8 +47,11 @@ class Employee:
     @property
     def weekly_pay(self):
         """Returns amount of weekly pay in US currency
-
+        
         For instance: $250.75
+
+        :return: Returns string representing weekly pay
+        :rtype: str
         """
         total_hours = self.hours_per_day * self.days_per_week
         total_wage = total_hours * self.wage
