@@ -31,7 +31,7 @@ class Employee:
     hours_per_day: float
     wage: float
 
-    def _rounder(self, number: str, places: int) -> str:
+    def _rounder(self, number: float, places: int) -> str:
         """Rounds a number the specified number of places
 
         :param number: Float of number of round
