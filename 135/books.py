@@ -35,7 +35,7 @@ def sort_books_by_len_of_title(books=books):
     Expected last book in list:
     Automate the Boring Stuff with Python
     """
-    pass
+    return sorted(books, key=lambda book: len(book.title))
 
 
 def sort_books_by_first_authors_last_name(books=books):
@@ -43,7 +43,7 @@ def sort_books_by_first_authors_last_name(books=books):
     Expected last book in list:
     Automate the Boring Stuff with Python
     """
-    pass
+    return sorted(books, key=lambda book: book.authors.split(',')[0].split()[-1])
 
 
 def sort_books_by_number_of_page(books=books):
@@ -51,7 +51,7 @@ def sort_books_by_number_of_page(books=books):
     Expected last book in list:
     Fluent Python
     """
-    pass
+    return sorted(books, key=attrgetter('pages'))
 
 
 def sort_books_by_published_date(books=books):
@@ -59,4 +59,4 @@ def sort_books_by_published_date(books=books):
     Expected last book in list:
     Python Interviews
     """
-    pass
+    return sorted(books, key=attrgetter('published'))
