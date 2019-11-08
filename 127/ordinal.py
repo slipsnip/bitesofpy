@@ -12,4 +12,11 @@ def get_ordinal_suffix(number):
          pronounced one hundred [and] twelfth)
        - th is used for all other numbers (e.g. 9th, pronounced ninth).
        """
-    pass
+    # last two digits of number as str unless less than ten 
+    number_str = str(number)
+    trans = {'11': 'th', '12': 'th', '13': 'th', '1': 'st', '2': 'nd', '3': 'rd'}
+    ending = number_str[-2:] if number > 10 and number_str[-2:] in trans else str(number)[-1]
+    suffix = trans[ending] if ending in trans else 'th'
+    return str(number) + suffix
+
+
