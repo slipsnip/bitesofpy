@@ -1,6 +1,6 @@
 import os
 import re
-from difflib import SequenceMatcher
+from difflib import (SequenceMatcher, get_close_matches)
 import itertools
 from urllib.request import urlretrieve
 
@@ -31,11 +31,8 @@ def _get_tags(tempfile=TEMPFILE):
 def get_similarities(tags=None):
     """Should return a list of similar tag pairs (tuples)"""
     tags = list(tags) if tags else list(_get_tags())
-    matcher = SequenceMatcher()
+    matches = []
     for index, tag1 in enumerate(tags):
         # if adding 1 to index does not exceed last index
-        if index + 1 < len(tags) - 1:
-            for tag2 in tags[index + 1:]:
-                matcher.set_seqs(tag1, tag2)
-                if matcher.ratio() >= SIMILAR:
-                    yield (tag1, tag2) 
+        matches.extend((tag1, tag2) for tag2 in get_close_matches(tag1, tags, cutoff=SIMILAR))
+    return matches
