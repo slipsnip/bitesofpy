@@ -31,8 +31,6 @@ def _get_tags(tempfile=TEMPFILE):
 def get_similarities(tags=None):
     """Should return a list of similar tag pairs (tuples)"""
     tags = list(tags) if tags else list(_get_tags())
-    matches = []
-    for index, tag1 in enumerate(tags):
+    for tag1 in tags:
         # if adding 1 to index does not exceed last index
-        matches.extend((tag1, tag2) for tag2 in get_close_matches(tag1, tags, cutoff=SIMILAR))
-    return matches
+        yield from [(tag1, tag2) for tag2 in get_close_matches(tag1, tags, cutoff=SIMILAR)]
