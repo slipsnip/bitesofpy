@@ -1,4 +1,4 @@
-import pandas
+from dateutil.rrule import (rrule, DAILY)
 from datetime import date
 
 
@@ -13,6 +13,7 @@ def get_missing_dates(dates):
     """
     # pandas series lets us sort by values and aparently suports dates
     # sorted_dates = pandas.Series(dates).sort_values()
-    sorted_dates = sorted(dates, key=lambda date: date.year + date.month + date.day)
-    full_range = pandas.date_range(sorted_dates[0], sorted_dates[-1])
+    # sorted_dates = sorted(dates, key=lambda date: date.year + date.month + date.day)
+    # full_range = pandas.date_range(sorted_dates[0], sorted_dates[-1])
+    full_range = list(rrule(DAILY, dtstart=min(dates), until=max(dates)))
     return [date.date() for date in full_range if date.date() not in dates]
