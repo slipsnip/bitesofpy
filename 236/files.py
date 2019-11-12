@@ -1,5 +1,8 @@
 from pathlib import PosixPath
-import difflib
+from difflib import (SequenceMatcher, get_close_matches)
+from operator import (itemgetter, attrgetter)
+
+SIMILAR = (0.6)
 
 
 def get_matching_files(directory: PosixPath, filter_str: str) -> list:
@@ -24,4 +27,6 @@ def get_matching_files(directory: PosixPath, filter_str: str) -> list:
        get_matching_files(d, 'o$tput') => ['output']
        get_matching_files(d, 'nonsense') => []
     """
-    pass
+    files = list(file.name for file in directory.iterdir())
+    matches = get_close_matches(filter_str, files, cutoff=1.0)
+    return get_close_matches(filter_str, files) if not matches else matches
