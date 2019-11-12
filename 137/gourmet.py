@@ -4,8 +4,10 @@
 Pairs wines and cheeses by similarity of wine name and cheese name.
 """
 
-from collections import Counter
-import operator
+from collections import (Counter, defaultdict)
+from enum import Enum
+from operator import itemgetter
+from itertools import (groupby, chain)
 
 CHEESES = [
     "Red Leicester",
@@ -88,12 +90,26 @@ SPARKLING_WINES = [
     "Lambrusco",
 ]
 
+class Wines(Enum):
+    RED = RED_WINES
+    WHITE = WHITE_WINES
+    SPARKLING = SPARKLING_WINES
 
-def best_match_per_wine(wine_type="all"):
+def wine_cheese_simularity(wine: str, cheese: str) -> int:
+    sum_intersect = sum(score for letter, score in Counter(wine).items() if letter in Counter(cheese))
+    length_difference = abs(len(wine) - len(cheese))
+    return sum_intersect / 1 + pow(length_difference, 2)
+
+def best_match_per_wine(wine_type="all", get_max=True):
     """ wine cheese pair with the highest match score
     returns a tuple which contains wine, cheese, score
     """
-    pass
+    wines = Wines[wine_type.upper()].value if wine_type != 'all' else RED_WINES + WHITE_WINES + SPARKLING_WINES
+    scored_pairs = [(wine, cheese, wine_cheese_simularity(wine, cheese)) for wine in wines for cheese in CHEESES]
+    return max(scored_pairs, key=itemgetter(2)) if get_max else scored_pairs
+
+    
+
 
 
 def match_wine_5cheeses():
@@ -107,4 +123,9 @@ def match_wine_5cheeses():
     ('Zinfandel', ['Caithness', 'Bel Paese', 'Ilchester', 'Limburger', 'Lancashire'])
     ]
     """
-    pass
+    best_of = defaultdict(str)
+    for wine, pairs in groupby(best_match_per_wine(get_max=False), itemgetter(0)):
+        best_of[wine] = [pair[1] for pair in sorted(pairs, key=itemgetter(2), reverse=True)][:5]
+
+    return [(wine, best_of[wine]) for wine in best_of.keys()]
+    

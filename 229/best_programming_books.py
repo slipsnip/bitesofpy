@@ -1,5 +1,6 @@
 from pathlib import Path
 from urllib.request import urlretrieve
+from dataclasses import dataclass
 
 from bs4 import BeautifulSoup
 
@@ -12,6 +13,7 @@ if not html_file.exists():
     urlretrieve(url, html_file)
 
 
+@dataclass
 class Book:
     """Book class should instatiate the following variables:
 
@@ -21,7 +23,11 @@ class Book:
     rank - integer rank to be updated once the books have been sorted
     rating - float as indicated on the page
     """
-    pass
+    title: str
+    author: str
+    year: int
+    rank: int
+    rating: float
 
 
 def _get_soup(file):
@@ -51,7 +57,8 @@ def load_data():
     should be updated to indicate this new sorting order.The Book object
     with the highest rating should be first and go down from there.
     """
-    pass
+    soup = _get_soup(html_file)
+    
 
 
 def main():

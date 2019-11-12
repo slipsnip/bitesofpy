@@ -8,11 +8,7 @@ from spelling import suggest_word, load_words
 @pytest.fixture(scope='module')
 def a_words():
     """Get only a[abcdefghijklm]-words to speed up tests"""
-    words = load_words()
-    return {word for word in words
-            if word.startswith('a') and len(word) > 1
-            and word[1] in string.ascii_letters[:13]}
-
+    return load_words(startswith='a', cutoff=13)
 
 @pytest.mark.parametrize("word, expected", [
     ('acheive', 'achieve'),

@@ -19,8 +19,13 @@ files = glob.glob(os.path.join(TMP, '*json'))
 
 
 def get_movie_data(files=files):
-    pass
-
+    breakpoint()
+    movies = []
+    for file_name in files:
+        with open(file_name) as f:
+            data = json.load(f)
+            movies.append(data)
+    return movies
 
 def get_single_comedy(movies):
     pass

@@ -1,6 +1,5 @@
 from pathlib import PosixPath
-from difflib import (SequenceMatcher, get_close_matches)
-from operator import (itemgetter, attrgetter)
+from difflib import get_close_matches
 
 SIMILAR = (0.6)
 

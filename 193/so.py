@@ -1,8 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from functools import partial
 from operator import itemgetter
-import re
 
 cached_so_url = 'https://bit.ly/2IMrXdp'
 
