@@ -10,11 +10,14 @@ blog = dict(name='PyBites',
             location='Spain/Australia',
             site='https://pybit.es')
 
-# define namedtuple here
+Blog = namedtuple('Blog', blog.keys())
+
 
 def dict2nt(dict_):
-    pass
+    return Blog._make(blog.values())
 
 
 def nt2json(nt):
-    pass
+    blog_dict = nt._asdict()
+    blog_dict['started'] = blog_dict['started'].isoformat()
+    return json.dumps(blog_dict)
