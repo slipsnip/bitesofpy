@@ -28,7 +28,12 @@ class Promo:
         self.bites_done = bites_done
 
     def _pick_random_bite(self):
-        pass
+        try:
+            return random.choice(list(set(BITES.keys()) - self.bites_done))
+        except IndexError:
+            raise NoBitesAvailable
 
     def new_bite(self):
-        pass
+        bite = self._pick_random_bite()
+        self.bites_done.add(bite)
+        return bite
