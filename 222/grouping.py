@@ -17,7 +17,8 @@ def group(iterable, n):
     """
     iterable = list(iterable)  # handle generator and tuple inputs
     mod = len(iterable) % n
-    build = [list(islice(iterable, index, index + n)) for index in range(0, len(iterable) - mod, n)]
+    build = [iterable[index: index + n] for index in range(0, len(iterable) - mod, n)]
+    # build = [list(islice(iterable, index, index + n)) for index in range(0, len(iterable) - mod, n)]
     if mod:
         build.append(iterable[-mod:])
     return build
