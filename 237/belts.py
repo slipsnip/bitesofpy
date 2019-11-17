@@ -1,5 +1,9 @@
 import json
 from pathlib import Path
+from dateutil.parser import parse
+from datetime import date
+from collections import defaultdict
+from itertools import takewhile
 
 SCORES = [10, 50, 100, 175, 250, 400, 600, 800, 1000]
 BELTS = ('white yellow orange green blue brown black '
@@ -21,4 +25,27 @@ def get_belts(data: str) -> dict:
        readable dates, example entry:
        'yellow': 'January 25, 2018'
     """
-    pass
+    belt_scores = dict(zip(SCORES, BELTS))
+    
+    with open(data) as data_fd:
+        data = json.load(data_fd)
+    ordered = sorted(data, key=lambda day: parse(day['date']).date())
+    belts_earned = defaultdict(date)
+    total_score = 0
+
+    for record in ordered:
+
+        total_score += record['score']
+        # list of scores surpassed, last element will be current_level
+        scores_ = list(takewhile(lambda score: total_score >= score, SCORES))
+        if scores_:
+            level_ = scores_[-1]
+            belt = belt_scores[level_]
+            if belt in belts_earned.keys():
+                continue
+            belts_earned[belt] = parse(record['date']).strftime('%B %d, %Y')
+    return dict(belts_earned)
+
+    
+
+     
