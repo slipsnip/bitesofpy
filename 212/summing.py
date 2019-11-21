@@ -11,10 +11,7 @@ def sum_numbers(numbers):
     """
     for i, j in zip(numbers, numbers[1:]):
         # replace the block below
-        try:
-            try:
+        with suppress(ZeroDivisionError):
+            with suppress(TypeError):
                 yield i/j
-            except ZeroDivisionError:
                 pass
-        except TypeError:
-            pass
