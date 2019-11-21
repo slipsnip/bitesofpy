@@ -14,4 +14,6 @@ def create_gravatar_url(email, size=200):
        For Python check hashlib check out (md5 / hexdigest):
        https://docs.python.org/3/library/hashlib.html#hashlib.hash.hexdigest
     """
-    pass
+    striped_lower = email.strip().lower().encode()
+    hashed_email = hashlib.md5(striped_lower).hexdigest()
+    return GRAVATAR_URL.format(hashed_email=hashed_email, size=size)
