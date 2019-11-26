@@ -1,4 +1,6 @@
 from functools import wraps
+from collections import deque
+from itertools import count
 from time import time
 from typing import Deque, List, Set, Generator
 
@@ -28,7 +30,7 @@ def contains(sequence: List[int], num: int) -> bool:
 
 @timing
 def contains_fast(sequence: Set[int], num: int) -> bool:
-    pass
+    return bool({num} & sequence)
 
 
 @timing
@@ -38,7 +40,7 @@ def ordered_list_max(sequence: List[int]) -> int:
 
 @timing
 def ordered_list_max_fast(sequence: List[int]) -> int:
-    pass
+    return sequence[-1]
 
 
 @timing
@@ -51,7 +53,7 @@ def list_concat(sequence: List[str]) -> str:
 
 @timing
 def list_concat_fast(sequence: List[str]) -> str:
-    pass
+    return ''.join(sequence)
 
 
 @timing
@@ -64,7 +66,7 @@ def list_inserts(n: int) -> List[int]:
 
 @timing
 def list_inserts_fast(n: int) -> Deque[int]:
-    pass
+    return deque(range(n - 1, -1, -1))
 
 
 @timing
@@ -76,5 +78,9 @@ def list_creation(n: int) -> List[int]:
 
 
 @timing
-def list_creation_fast(n: int) -> Generator[int]:
-    pass
+def list_creation_fast(n: int) -> Generator[int, None, None]:
+    counter = count()
+    element = next(counter)
+    while(element < n):
+        yield element
+        element = next(counter)
