@@ -66,17 +66,16 @@ def filter_killed_mutants(mutpy_output: list = None) -> list:
             in_mutant_ = not in_mutant_
             mutation.append(line)
             continue
+        elif in_mutant_:
+            mutation.append(line)
+            continue
         if not in_mutant_:
             if len(mutation) > 0:
                 line_split = line.split()
-                if 'killed' not in line_split and 'incompetent' not in line_split:
+                if 'survived' in line_split:
                     filtered.extend(mutation)
-                    mutation = []
-                else:
-                    mutation = []
+                mutation = []
             filtered.append(line)
-        else:
-            mutation.append(line)
     return filtered
         
 
