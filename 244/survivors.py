@@ -45,7 +45,8 @@ def filter_killed_mutants(mutpy_output: list = None) -> list:
          - [#  15] DDL account:
       [0.10240 s] killed by test_account.py::test_balance
 
-      So you mute all that is in between and including the 2x:
+      So you mute all that is in between and including th
+            mutation.append(line)e 2x:
       --------------------------------------------------------------------------------
 
       Return the filtered output as a list of lines.
@@ -53,4 +54,29 @@ def filter_killed_mutants(mutpy_output: list = None) -> list:
     if mutpy_output is None:
         mutpy_output = _get_data()
 
-    # your code
+    # for each line split()
+    # if line is ----, is_mutant_ = invert is_mutant_
+    #   mutant.append(line)
+    # if by in split_line
+    filtered = []
+    mutation = []
+    in_mutant_ = False
+    for line in mutpy_output:
+        if line == '-' * 80:
+            in_mutant_ = not in_mutant_
+            mutation.append(line)
+            continue
+        if not in_mutant_:
+            if len(mutation) > 0:
+                line_split = line.split()
+                if 'killed' not in line_split and 'incompetent' not in line_split:
+                    filtered.extend(mutation)
+                    mutation = []
+                else:
+                    mutation = []
+            filtered.append(line)
+        else:
+            mutation.append(line)
+    return filtered
+        
+
