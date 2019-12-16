@@ -1,7 +1,9 @@
 import os
 import re
-from collections import namedtuple
+from collections import namedtuple, defaultdict
 import urllib.request
+
+
 
 TMP = os.getenv("TMP", "/tmp")
 DATA = 'safari.logs'
@@ -15,39 +17,32 @@ urllib.request.urlretrieve(
 )
 
 def parse_(line):
-    data_ = re.compile(r'^(\d{2}-\d{2}).+?-\s(.+)') 
-    try:
-        return LINE(*data_.match(line).groups())
-    except:
+    if not line:
         return None
+    choped_line = line.lower().split()
+    if 'python' in choped_line:
+        msg = PY_BOOK
+    elif 'sending' in choped_line:
+        msg = 'sending'
+    elif 'skipping' in choped_line:
+        msg = 'skipping'
+    else:
+        msg = OTHER_BOOK
+        
+    return LINE(choped_line[0], msg)
 
 
 def create_chart():
-    lines = []
-    date_prev = ''
-    is_first_run = True
-    bar = ''
+    data = defaultdict(str)
     with open(SAFARI_LOGS) as log:
-        bar = ''
-        for line in log.readlines():
-            line = parse_(line)
-            lines.append(line)
-            if not line:
-                continue
-            if line.date != date_prev:
-                if bar:
-                    print(out + bar)
-                    bar = ''
-                out = line.date + ' '
-                date_prev = line.date
-                is_new_date = True
-            else:
-                is_new_date = False
-            if 'sending' in line.msg.split():
-                if 'python' in lines[-2].msg.lower().split():
-                    bar += PY_BOOK
-                else:
-                    bar += OTHER_BOOK
-        print(out + bar)
+        lines = [parse_(line) for line in log.readlines()]
+        for index, line in enumerate(lines):
+            if line.msg == 'sending':
+                previous_line = lines[index - 1]
+                data[previous_line.date] += previous_line.msg
+        for date, graph in data.items():
+            print(f'{date} {graph}')
+
+
 
 
