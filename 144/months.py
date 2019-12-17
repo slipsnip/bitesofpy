@@ -29,4 +29,8 @@ def calc_months_passed(year, month, day):
 
        Return the number of months passed int.
     """
-    pass
+    till = date(year, month, day) 
+    if till < START_DATE:
+        raise ValueError
+    diff = relativedelta(till, START_DATE)
+    return diff.years * 12 + diff.months + (1 if diff.days >= 10 else 0)
