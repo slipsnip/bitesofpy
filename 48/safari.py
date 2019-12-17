@@ -16,33 +16,30 @@ urllib.request.urlretrieve(
     SAFARI_LOGS
 )
 
-def parse_(line):
-    if not line:
-        return None
-    choped_line = line.lower().split()
-    if 'python' in choped_line:
-        msg = PY_BOOK
-    elif 'sending' in choped_line:
-        msg = 'sending'
-    elif 'skipping' in choped_line:
-        msg = 'skipping'
-    else:
-        msg = OTHER_BOOK
-        
-    return LINE(choped_line[0], msg)
-
 
 def create_chart():
     data = defaultdict(str)
     with open(SAFARI_LOGS) as log:
-        lines = [parse_(line) for line in log.readlines()]
-        for index, line in enumerate(lines):
-            if line.msg == 'sending':
-                previous_line = lines[index - 1]
-                data[previous_line.date] += previous_line.msg
+        raw_data = ''
+        pos = 0
+        for line in log:
+            if not line:
+                continue
+            raw_data += line.lower()
+            if pos >= 1:
+                fields = raw_data.split()
+                pos = 0
+                if not 'sending' in fields:
+                    raw_data = ''
+                    continue
+                else:
+                    date = fields[0]
+                    if 'python' in raw_data:
+                        data[date] += PY_BOOK
+                    else:
+                        data[date] += OTHER_BOOK
+                raw_data = ''
+            else:
+                pos += 1
         for date, graph in data.items():
             print(f'{date} {graph}')
-
-
-
-
