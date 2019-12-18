@@ -70,4 +70,21 @@ def operas_both_at_premiere(guest, composer):
 
        Returns a list (or generator) of titles of operas.
     """
-    pass
+    titles = []
+    for opera in operas:
+        if not all(person in composers for person in [guest, composer]):
+            raise ValueError
+        if opera.author != composer:
+            continue
+        is_possible = True  # until proven otherwise
+        premiere = _get_date(opera.date)
+        for person in [guest, composer]:
+            born = _get_date(composers[person].born)
+            died = _get_date(composers[person].died)
+            if born > premiere or died <= premiere:
+                is_possible = False
+                break
+        if is_possible:
+            titles.append(opera.play)
+        is_possible = True  # reset
+    return titles
