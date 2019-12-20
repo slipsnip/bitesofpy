@@ -1,10 +1,25 @@
+import math
+
 STAR = "+"
 LEAF = "*"
 TRUNK = "|"
 
 
 def generate_improved_xmas_tree(rows=10):
-    """Generate a xmas tree with a star (+), leafs (*) and a trunk (|)
-       for given rows of leafs (default 10).
-       For more information see the test and the bite description"""
-    pass
+    num_leafs = lambda row: row * 2 - 1
+    width = num_leafs(rows)
+    star = "{0:^{1}}".format(STAR, width)
+    tree = '\n'.join(f"{LEAF * num_leafs(row):^{width}}" for row in range(1, rows + 1))
+    half = width / 2
+    is_good_ = lambda trunk_width: (width - trunk_width) % 2 == 0
+    if type(half) == int:  # is whole number
+        trunk_width = half
+    else:
+        trunk_width = math.ceil(half)
+        while(not is_good_(trunk_width)):
+            trunk_width += 1
+
+    trunk = '\n'.join(f'{TRUNK * trunk_width:^{width}}' for _ in range(2))
+    ret = '\n'.join([star, tree, trunk])
+    return ret
+    
