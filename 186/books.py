@@ -25,3 +25,8 @@ def get_number_books_read(books_per_year_goal: int,
     # 3. check the offset of at_date in the year ("week of the
     # year" - e.g. whatweekisit.com) and based on the books_per_year_goal,
     # calculate the number of books that should have been read / completed
+    at_date = parse(at_date)
+    if books_per_year_goal <= 0 or at_date < NOW:
+        raise ValueError
+    week = at_date.isocalendar()[1]
+    return int(week * (books_per_year_goal / 52))
