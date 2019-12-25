@@ -11,5 +11,26 @@ USERS = (julian, bob, pybites)
 
 # define exception classes here
 
-def get_secret_token(username):
+class UserDoesNotExist(Exception):
     pass
+
+
+class UserAccessExpired(Exception):
+    pass
+
+
+class UserNoPermission(Exception):
+    pass
+
+
+def get_secret_token(username):
+    user = list(filter(lambda u: u.name == username, USERS))
+    user = user[0] if user else None
+    if user is None:
+        raise UserDoesNotExist
+    elif user.expired:
+        raise UserAccessExpired
+    elif user.role != ADMIN:
+        raise UserNoPermission
+    else:
+        return SECRET
