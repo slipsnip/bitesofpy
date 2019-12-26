@@ -1,3 +1,7 @@
+from bs4 import BeautifulSoup
+from string import digits
+from collections import defaultdict
+
 # source: https://www.virgin.com/richard-branson/my-top-10-quotes-living-life-better
 HTML = """<!DOCTYPE html>
 <head>
@@ -26,4 +30,11 @@ HTML = """<!DOCTYPE html>
 
 def extract_quotes(html: str = HTML) -> dict:
     """See instructions in the Bite description"""
-    pass
+    soup = BeautifulSoup(html, 'html.parser')
+    quotes = defaultdict(str)
+    for paragraph in soup.find_all('p'):
+        text = paragraph.text
+        if text[0] in digits:
+            quote, author = [field.lstrip('- ') for field in text.strip().split('"')][1:]
+            quotes[author] = quote
+    return dict(quotes)
