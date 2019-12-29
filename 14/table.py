@@ -7,5 +7,5 @@ awake = [True, False] * 3
 SEPARATOR = ' | '
 
 
-def generate_table():
-    pass
+def generate_table(names, *columns):
+    yield from [SEPARATOR.join(str(column) for column in tuple) for tuple in zip(names,*columns)]
