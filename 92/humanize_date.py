@@ -1,5 +1,6 @@
 from collections import namedtuple
-from datetime import datetime
+from datetime import datetime, timedelta
+from itertools import takewhile
 
 TimeOffset = namedtuple('TimeOffset', 'offset date_str divider')
 
@@ -19,4 +20,14 @@ TIME_OFFSETS = (
 def pretty_date(date):
     """Receives a datetime object and converts/returns a readable string
        using TIME_OFFSETS"""
-    pass
+    if not isinstance(date, datetime) or \
+        date > NOW:
+            raise ValueError
+    dx = int((NOW - date).total_seconds())
+    before = lambda time_offset: dx < time_offset.offset
+    time_offsets = list(takewhile(before, TIME_OFFSETS[::-1]))
+    if time_offsets:
+        time_offset = time_offsets[-1]
+        return time_offset.date_str.format(dx // (time_offset.divider or 1))
+    days = (NOW - date).days
+    return (NOW - timedelta(days=days)).strftime('%m/%d/%y')
