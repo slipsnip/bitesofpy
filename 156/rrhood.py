@@ -1,3 +1,6 @@
+from collections import defaultdict
+
+
 CHARACTERS = ['Red Riding Hood',
               # we're omitting 'mother' here for simplicity
               # (= substring grandmother)
@@ -43,6 +46,13 @@ The woodsman knocked out the wolf and carried him deep into the forest where he 
 Little Red Riding Hood and her Grandmother had a nice lunch and a long chat.
 """
 
+def is_mentioned(name, line):
+    for name_ in name if isinstance(name, tuple) else [name]:
+        name_ = name_.lower()
+        if name_ in line.lower():
+            return True 
+    return False
+
 
 def make_character_index(text=text, characters=CHARACTERS):
     """Return a dict with keys are characters (lowercased) and values
@@ -52,4 +62,10 @@ def make_character_index(text=text, characters=CHARACTERS):
        - e.g. ('Grandmother', 'Grandma', 'Granny') -
        then return the former as key.
     """
-    pass
+    index = defaultdict(list)
+    for line_num, line in enumerate(text.splitlines()):
+        for character in characters:
+            if is_mentioned(character, line):
+                character = character if not isinstance(character, tuple) else character[0]
+                index[character.lower()].append(line_num)
+    return index
