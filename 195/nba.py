@@ -58,20 +58,24 @@ if DB.stat().st_size == 0:
 def player_with_max_points_per_game():
     """The player with highest average points per game (don't forget to CAST to
        numeric in your SQL query)"""
-    pass
+    players = cur.execute('SELECT name, avg_points from players')
+    return max(players, key=lambda player: float(player[-1]))[0]
+
 
 
 def number_of_players_from_duke():
     """Return the number of players with college == Duke University"""
-    pass
-
+    players = cur.execute('SELECT name, college FROM players WHERE college = ?', ('Duke University',))
+    return len(players.fetchall())
 
 def avg_years_active_players_stanford():
     """Return the average years that players from "Stanford University
        are active ("active" column)"""
-    pass
+    active = cur.execute('SELECT avg(active) FROM players WHERE college=?',('Stanford University',))
+    return active.fetchone()[0]
 
 
 def year_with_most_drafts():
     """Return the year with the most drafts, in SQL you can use GROUP BY"""
-    pass
+    year = cur.execute('SELECT year,count(year) FROM players GROUP BY year')
+    return max(year.fetchall(), key=lambda record: int(record[-1]))[0]
